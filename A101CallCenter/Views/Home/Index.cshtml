@@ -1,0 +1,115 @@
+﻿@using A101CallCenter.Pagination
+@model PaginatedList<A101CallCenter.Models.Customer>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@using (Html.BeginForm())
+{
+    <p>
+        Filter by string: @Html.TextBox("searchString")  
+        <input type="submit" value="Search" />
+    </p>
+}
+@if (!string.IsNullOrEmpty(ViewBag.SortOrder))
+{
+    if(ViewBag.SortOrder == "asc"){
+        <p>Sorting: asc</p>
+    }
+    else
+    {
+        <p>Sorting: desc</p>
+    }
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.SortOrder, sortType = "name", searchString = ViewBag.SearchParam, sortCommand = true })
+            </th>
+            <th>
+                @Html.ActionLink("Age", "Index", new { sortOrder = ViewBag.SortOrder, sortType = "age", searchString = ViewBag.SearchParam, sortCommand = true })
+            </th>
+            <th style="white-space: nowrap;">
+                @Html.ActionLink("Monthly Income", "Index", new { sortOrder = ViewBag.SortOrder, sortType = "monthlyIncome", searchString = ViewBag.SearchParam, sortCommand = true })
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                @Html.ActionLink("City", "Index", new { sortOrder = ViewBag.SortOrder, sortType = "city", searchString = ViewBag.SearchParam, sortCommand = true })
+            </th>
+            <th>
+                @Html.ActionLink("Dictrict", "Index", new { sortOrder = ViewBag.SortOrder, sortType = "district", searchString = ViewBag.SearchParam, sortCommand = true })
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                Review
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td style="white-space: nowrap;">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MonthlyIncome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.District)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Review)
+            </td>
+            <td style="white-space: nowrap;">
+                <a asp-action="Edit" asp-route-id="@item.Id" asp-route-pageNumber="@Model.PageIndex">Edit</a> | <a asp-action="Delete" asp-route-id="@item.Id" asp-route-pageNumber="@Model.PageIndex">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-sortOrder="@ViewBag.SortOrder"
+   asp-route-sortType="@ViewBag.SortType"
+   asp-route-searchString="@ViewBag.SearchParam"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-sortOrder="@ViewBag.SortOrder"
+   asp-route-sortType="@ViewBag.SortType"
+   asp-route-searchString="@ViewBag.SearchParam"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
