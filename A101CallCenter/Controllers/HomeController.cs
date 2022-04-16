@@ -66,7 +66,7 @@ namespace A101CallCenter.Controllers
                         }
                         else
                         {
-                            customers.OrderByDescending(x => x.Name);
+                            customers = customers.OrderByDescending(x => x.Name);
                         }
                         break;
                     case "age":
